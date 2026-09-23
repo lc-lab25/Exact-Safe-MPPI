@@ -1,0 +1,26 @@
+# Nine-constraint benchmark map. Values from experiments/batch2.py.
+experiment: nine_constraint
+base_seed: 0
+n_seeds: 100                    # seed = base_seed + run_index
+n_goals: 4                      # 4 goals x 100 seeds = 400 runs per controller
+controllers:
+  - {name: shield,  rho: null}  # discrete-time CBF repair baseline
+  - {name: softmin, rho: 5.0}
+  - {name: softmin, rho: 20.0}
+  - {name: softmin, rho: 50.0}
+  - {name: softmin, rho: 200.0}
+  - {name: softmin, rho: 1000.0}
+  - {name: exact,   rho: null}  # Exact-Safe MPPI
+delta: 0.1
+mppi:
+  K: 1000
+  horizon_N: 20
+  lambda: 300.0
+  sigma_diag: [1.33, 0.33]
+  gamma: 1.0e24
+  k_max: 4
+integration:
+  T_s: 0.1
+  dt_execute: 0.002
+  quick_run_length_T: 2.0      # smoke test only, not a reproduction
+  run_length_T: 10.0

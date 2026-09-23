@@ -1,0 +1,50 @@
+# Gap-threshold sweep (Fig. 1, Table I).
+# Every value is taken from the experiment code that produced the paper results
+# (experiments/r5_gap_threading.py); none is invented here.
+experiment: gap_threshold
+base_seed: 0
+n_seeds: 50                     # seed = base_seed + run_index
+geometries: [box, disk]         # box = rounded-square, p-norm p = 8
+widths: [0.05, 0.08, 0.12, 0.20, 0.35, 0.50]
+rhos: [0.5, 1.0, 2.0, 3.0, 5.0, 8.0, 15.0, 30.0]
+include_exact_arm: true
+# the narrowest disk width is excluded: its exact-arm ceiling is too low to measure a
+# threshold, so its curve would be set by goal reachability rather than by erosion.
+excluded_cells: ["disk_0.05"]
+# per-cell delta* for the exact arm
+delta_star:                     # keys are "<geometry>_<width>"
+  box_0.05: 0.03683
+  box_0.08: 0.03788
+  box_0.12: 0.04771
+  box_0.20: 0.04777
+  box_0.35: 0.06640
+  box_0.50: 0.05434
+  disk_0.05: 0.04567
+  disk_0.08: 0.06146
+  disk_0.12: 0.06658
+  disk_0.20: 0.05997
+  disk_0.35: 0.05596
+  disk_0.50: 0.07021
+plant:
+  kind: double_integrator
+  disk_radius: 0.95
+  box_half_extent: 1.0
+  p_norm: 8
+  cascade_gain_a: 2.5           # alpha_{j,0}(s) = a * s
+  filter_class_k_gain: 0.5      # alpha(s) in the filter
+  speed_max: 9.0
+  speed_min: -1.0
+mppi:
+  K: 1000
+  horizon_N: 20
+  # the gap sweep uses a per-geometry temperature (LAMBDA_BY_GEOM in the source code).
+  # The paper states lambda = 300 for every controller; the code's values are kept.
+  lambda_by_geometry: {box: 30.0, disk: 300.0}
+  sigma_diag: [1.33, 0.33]
+  gamma: 1.0e24
+  k_max: 4
+integration:
+  T_s: 0.1                      # one Euler step per rollout step
+  dt_execute: 0.002             # execution substep
+  quick_run_length_T: 2.0      # smoke test only, not a reproduction
+  run_length_T: 12.0

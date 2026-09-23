@@ -1,0 +1,20 @@
+# k_max ablation: single most-active constraint vs full simultaneous enforcement.
+# Values from experiments/batch2.py (ABL_KMAX, ABL_SEEDS).
+experiment: kmax_ablation
+base_seed: 0
+n_seeds: 10                     # seed = base_seed + run_index
+n_goals: 4
+k_max_values: [1, 2, 4]         # k_max = 1 IS the single-vertex ablation
+lipschitz_activation: [false, true]
+delta: 0.1
+mppi:
+  K: 1000
+  horizon_N: 20
+  lambda: 300.0
+  sigma_diag: [1.33, 0.33]
+  gamma: 1.0e24
+integration:
+  T_s: 0.1
+  dt_execute: 0.002
+  quick_run_length_T: 2.0      # smoke test only, not a reproduction
+  run_length_T: 10.0
