@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the paper below."
+title: "Exact-Safe MPPI"
+abstract: >-
+  Exact-Safe MPPI enforces the exact minimum of multiple (high-order) control barrier
+  functions inside every MPPI rollout using a closed-form linear complementarity (LCP)
+  filter.
+type: software
+license: MIT
+version: 0.1.0
+repository-code: "https://github.com/alexkcoker/exact-safe-mppi"
+authors:
+  - family-names: Coker
+    given-names: Alex
+    affiliation: "Department of Mechanical Engineering, University of New Mexico"
+  - family-names: Cui
+    given-names: Leilei
+    affiliation: "Department of Mechanical Engineering, University of New Mexico"
+preferred-citation:
+  type: conference-paper
+  title: "Composing Exact Barriers Inside an MPPI Planner"
+  year: 2027
+  collection-title: "Submitted to the American Control Conference (ACC)"
+  authors:
+    - family-names: Coker
+      given-names: Alex
+      affiliation: "Department of Mechanical Engineering, University of New Mexico"
+    - family-names: Cui
+      given-names: Leilei
+      affiliation: "Department of Mechanical Engineering, University of New Mexico"
