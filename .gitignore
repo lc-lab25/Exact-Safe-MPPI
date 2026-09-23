@@ -1,0 +1,26 @@
+# --- results and generated artefacts ---------------------------------------------------
+results/*
+!results/expected/
+!results/expected/**
+figures/
+
+# --- python -----------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# --- editors / OS -----------------------------------------------------------------------
+.DS_Store
+*.swp
+
+# --- large data files (videos are tracked; see media/README.md) -------------------------
+*.npz
+*.h5
+*.hdf5
+*.pkl
