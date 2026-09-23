@@ -1,43 +1,147 @@
 {
-  "_note": "Values reported in the paper. scripts/verify_results.py compares fresh results against this file and never overwrites it. Tolerances are given per entry.",
-  "closed_form_checks": {
-    "sup_hmin_closed_form":    {"value": 0.6060,  "tol": 1e-3,  "source": "paper: a*w*(2r+w), disk w=0.12"},
-    "sup_hrho_rho1":           {"value": -0.0871, "tol": 1e-3,  "source": "paper: soft-min peak over X at rho=1"},
-    "deficit_rho1":            {"value": 0.6931,  "tol": 1e-3,  "source": "paper: ln 2 / rho at rho=1"},
-    "sup_hrho_rho2_positive":  {"value": true,                  "source": "paper: positive peak at rho=2"},
-    "rho_crit_closed_form":    {"value": 1.1438,  "tol": 1e-3,  "source": "Proposition 1: ln2/(a*w*(2r+w))"}
+ "_note": "Values reported in the paper. scripts/verify_results.py compares fresh results against this file and never overwrites it. Tolerances are given per entry.",
+ "closed_form_checks": {
+  "sup_hmin_closed_form": {
+   "value": 0.606,
+   "tol": 0.001,
+   "source": "paper: a*w*(2r+w), disk w=0.12"
   },
-  "lcp_vs_scalar": {
-    "n_states":            {"value": 10030,                     "source": "paper: sampled states with k_delta = 1"},
-    "max_abs_difference":  {"value": 8.9e-16, "tol_abs": 1e-14, "cmp": "<=", "source": "paper: <= 8.9e-16"}
+  "sup_hrho_rho1": {
+   "value": -0.0871,
+   "tol": 0.001,
+   "source": "paper: soft-min peak over X at rho=1"
   },
-  "gap_threshold": {
-    "n_softmin_runs":            {"value": 4400,  "source": "paper: 4400 soft-min runs"},
-    "n_exact_runs":              {"value": 550,   "source": "paper: 550 exact runs"},
-    "n_below_threshold":         {"value": 1050,  "source": "paper: 1050 runs below kappa = ln 2"},
-    "threaded_below_threshold":  {"value": 0,     "source": "paper: zero threaded below threshold"},
-    "smallest_successful_kappa": {"value": 0.875, "tol": 1e-3, "source": "paper"},
-    "min_leaf_all_runs":         {"value": 0.024, "tol": 5e-3, "cmp": ">=0", "source": "paper: +2.4e-2 across all 4950 gap runs"},
-    "table1": {
-      "lt_ln2":     {"runs": 1050, "threaded": 0.000, "deadlocked": 0.996, "moving": 0.004, "tol": 5e-3},
-      "ln2_to_1":   {"runs": 350,  "threaded": 0.857, "deadlocked": 0.143, "tol": 5e-3},
-      "ge_1":       {"runs": 3000, "threaded": 1.000, "tol": 5e-3}
-    }
+  "deficit_rho1": {
+   "value": 0.6931,
+   "tol": 0.001,
+   "source": "paper: ln 2 / rho at rho=1"
   },
-  "nine_constraint": {
-    "violations": {
-      "shield":         {"value": 0,  "source": "paper"},
-      "exact":          {"value": 0,  "source": "paper"},
-      "softmin_rho5":   {"value": 0,  "source": "paper"},
-      "softmin_rho20":  {"value": 0,  "source": "paper"},
-      "softmin_rho50":  {"value": 0,  "source": "paper"},
-      "softmin_rho200": {"value": 34, "source": "paper"},
-      "softmin_rho1000":{"value": 53, "source": "paper"}
-    },
-    "runs_per_controller": {"value": 400, "source": "paper: 4 goals x 100 seeds"}
+  "sup_hrho_rho2_positive": {
+   "value": true,
+   "source": "paper: positive peak at rho=2"
   },
-  "mppi": {
-    "ess_first_update_lambda300": {"value": 922.0, "tol": 50.0, "source": "paper: approx 922 at lambda=300"},
-    "ess_first_update_lambda1":   {"value": 1.00,  "tol": 0.05, "source": "paper: 1.00 at lambda=1"}
+  "rho_crit_closed_form": {
+   "value": 1.1438,
+   "tol": 0.001,
+   "source": "Proposition 1: ln2/(a*w*(2r+w))"
   }
+ },
+ "lcp_vs_scalar": {
+  "n_states": {
+   "value": 10030,
+   "source": "paper: sampled states with k_delta = 1"
+  },
+  "max_abs_difference": {
+   "value": 8.9e-16,
+   "tol_abs": 1e-14,
+   "cmp": "<=",
+   "source": "paper: <= 8.9e-16"
+  }
+ },
+ "gap_threshold": {
+  "n_softmin_runs": {
+   "value": 4400,
+   "source": "paper: 4400 soft-min runs"
+  },
+  "n_exact_runs": {
+   "value": 550,
+   "source": "paper: 550 exact runs"
+  },
+  "n_below_threshold": {
+   "value": 1050,
+   "source": "paper: 1050 runs below kappa = ln 2"
+  },
+  "threaded_below_threshold": {
+   "value": 0,
+   "source": "paper: zero threaded below threshold"
+  },
+  "smallest_successful_kappa": {
+   "value": 0.875,
+   "tol": 0.001,
+   "source": "paper"
+  },
+  "min_leaf_all_runs": {
+   "value": 0.024,
+   "tol": 0.005,
+   "cmp": ">=0",
+   "source": "paper: +2.4e-2 across all 4950 gap runs"
+  },
+  "table1": {
+   "lt_ln2": {
+    "runs": 1050,
+    "threaded": 0.0,
+    "deadlocked": 0.996,
+    "moving": 0.004,
+    "tol": 0.005
+   },
+   "ln2_to_1": {
+    "runs": 350,
+    "threaded": 0.857,
+    "deadlocked": 0.143,
+    "tol": 0.005
+   },
+   "ge_1": {
+    "runs": 3000,
+    "threaded": 1.0,
+    "tol": 0.005
+   }
+  }
+ },
+ "nine_constraint": {
+  "violations": {
+   "shield": {
+    "value": 0,
+    "source": "paper"
+   },
+   "exact": {
+    "value": 0,
+    "source": "paper"
+   },
+   "softmin_rho5": {
+    "value": 0,
+    "source": "paper"
+   },
+   "softmin_rho20": {
+    "value": 0,
+    "source": "paper"
+   },
+   "softmin_rho50": {
+    "value": 0,
+    "source": "paper"
+   },
+   "softmin_rho200": {
+    "value": 34,
+    "source": "paper"
+   },
+   "softmin_rho1000": {
+    "value": 53,
+    "source": "paper"
+   }
+  },
+  "runs_per_controller": {
+   "value": 400,
+   "source": "paper: 4 goals x 100 seeds"
+  }
+ },
+ "mppi": {
+  "_note": "Both are the FIRST-UPDATE effective sample size on the nine-constraint map, K = 1000, measured by experiments/closed_form_checks.py. lambda = 300 is the temperature the nine-constraint and k_max experiments use. lambda = 1 is NOT used by any experiment here; it is the published value, measured only to show why it was replaced.",
+  "ess_first_update_lambda300": {
+   "value": 922.0,
+   "tol": 50.0,
+   "source": "paper: approx 922 at lambda=300",
+   "measured_by": "closed_form_checks",
+   "used_by_experiments": [
+    "nine_constraint",
+    "kmax_ablation",
+    "gap_threshold (disk geometry)"
+   ]
+  },
+  "ess_first_update_lambda1": {
+   "value": 1.0,
+   "tol": 0.05,
+   "source": "paper: 1.00 at lambda=1",
+   "measured_by": "closed_form_checks",
+   "used_by_experiments": []
+  }
+ }
 }

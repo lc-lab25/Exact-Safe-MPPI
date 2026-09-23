@@ -93,6 +93,11 @@ def main():
                     {"value": spec[field], "tol": spec.get("tol", 0)},
                     g[field] if g else None)
 
+    for k, spec in exp["mppi"].items():
+        if k.startswith("_"):
+            continue
+        add(f"mppi.{k}", spec, cf.get(k) if cf else None)
+
     nc = load(R / "nine_constraint" / "summary.json")
     for k, spec in exp["nine_constraint"]["violations"].items():
         add(f"nine_constraint.violations.{k}", spec,

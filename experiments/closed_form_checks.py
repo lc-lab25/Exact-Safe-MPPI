@@ -43,6 +43,28 @@ def main():
         out[f"sup_hrho_rho{rho:g}"] = sup
         out[f"deficit_rho{rho:g}"] = sup_hmin - sup
         out[f"deficit_minus_ln2_over_rho_rho{rho:g}"] = (sup_hmin - sup) - LN2 / rho
+    # Temperature diagnostic, on the settings of the experiment the paper's figures come from:
+    # the nine-constraint benchmark map, soft-minimum arm at its default rho, goal 0, seed 0,
+    # K = 1000, planning horizon N = 20 at T_s = 0.1 s (2 s), closed loop run for 2 s.
+    # lambda = 1 is NOT used by any experiment here; it is the published value, measured only
+    # to show why it was replaced. The reported quantity is the FIRST-UPDATE ESS, which the
+    # paper states "at the first planning step". Only the first-update value is
+    # reported and checked.
+    from exact_safe_mppi.dynamics import Unicycle
+    from exact_safe_mppi.mppi import Cost, make_filter, run_closed_loop
+    GS = E.nine_constraint
+    out["ess_environment"] = "nine_constraint"
+    out["ess_settings"] = dict(arm="softmin", rho=float(GS.RHO_DEFAULT), goal=0, seed=0,
+                               K=int(GS.K_SAMPLES), N=int(GS.N_HORIZON), Ts=float(GS.TS),
+                               horizon_seconds=float(GS.N_HORIZON * GS.TS), T=2.0)
+    for lam in (300.0, 1.0):
+        run = run_closed_loop(GS.X0, Unicycle, GS,
+                              make_filter("softmin", GS, rho=GS.RHO_DEFAULT, delta=0.1),
+                              Cost(GS.GOALS[0]), seed=0, T=2.0, Ts=GS.TS, dt=GS.DT_INNER,
+                              N=GS.N_HORIZON, K=GS.K_SAMPLES, lam=lam, Sigma=GS.SIGMA)
+        e = np.asarray(run["ess"], float)
+        out[f"ess_first_update_lambda{lam:g}"] = float(e[0])
+
     with open(d / "closed_form_checks.json", "w") as fh:
         json.dump(out, fh, indent=1)
     for k, v in out.items():

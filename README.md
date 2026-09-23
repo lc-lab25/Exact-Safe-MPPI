@@ -42,11 +42,31 @@ will occupy.
 | <a href="media/videos/nine_constraint_shield.mp4"><img src="media/placeholders/nine_constraint_shield.svg" width="320" alt="Nine-constraint map: discrete-time repair baseline"></a> | Nine-constraint map: discrete-time repair baseline |
 | <a href="media/videos/kmax1_ablation_chattering.mp4"><img src="media/placeholders/kmax1_ablation_chattering.svg" width="320" alt="Single most-active constraint (k_max=1): chattering"></a> | Single most-active constraint (k_max=1): chattering |
 
-> **Swapping in a real video.** GitHub does not play relative-path `.mp4` files inline in a
-> README. Once a video exists, either (a) replace the placeholder `<img>` with a GIF preview
-> that links to the mp4, or (b) drag the mp4 into a GitHub issue or PR comment and use the
-> resulting `user-attachments` URL, which does play inline. The project page under `docs/`
-> plays the mp4 files directly and needs no such workaround.
+### Adding a video
+
+Videos are tracked by git; nothing in `.gitignore` excludes them.
+
+```bash
+# 1. put the file in place, using exactly the name from the table above
+#    (or regenerate it: python scripts/render_video.py --name disk_gap_exact_threads)
+cp /path/to/clip.mp4 media/videos/disk_gap_exact_threads.mp4
+
+# 2. refresh the copy the project page serves
+make site
+
+# 3. commit both
+git add media/videos/disk_gap_exact_threads.mp4 docs/assets/media
+git commit -m "Add disk gap exact threading video"
+```
+
+No other edit is needed: the README already links to `media/videos/<name>.mp4`, and the project
+page swaps its placeholder for the real file automatically.
+
+> **One GitHub quirk.** GitHub does not play a relative-path `.mp4` inline in a README, so the
+> table above will keep showing the placeholder card, which links to the file. To get an inline
+> preview, either replace the placeholder `<img>` with a GIF, or drag the mp4 into a GitHub
+> issue comment and use the resulting `user-attachments` URL. The project page under `docs/`
+> plays the mp4 directly and needs neither workaround.
 
 ## Installation
 
@@ -88,6 +108,7 @@ row, so `--workers` changes only the wall time.
 | Nine-constraint safety | `python experiments/nine_constraint.py` | `results/nine_constraint/{runs.csv,summary.json}` |
 | k_max ablation | `python experiments/kmax_ablation.py` | `results/kmax_ablation/{runs.csv,summary.json}` |
 | Verification | `python scripts/verify_results.py` | PASS/FAIL table on stdout |
+| Figures only | `make figures` | reads `results/*/runs.csv`, rewrites `figures/`; reruns nothing |
 
 **Runtime.** `make quick` is **measured at 9.7 minutes** on one core (Xeon-class server,
 `--workers 1`):
@@ -126,6 +147,35 @@ media/                 placeholder cards now, videos later
 docs/                  single-file GitHub Pages project page
 ```
 
+## Outcome definitions
+
+Every gap run is classified exactly as in the source experiment code
+(`gap_threshold.py:one`, matching `r5_gap_threading.py:run_one`). Let `q` be the position
+trace, `w` the gap half-width and `minh = min_t min_j h_j`.
+
+```
+crossed    = (q_x > 0.5).any()
+qy_at_gap  = |q_y| at the sample minimising |q_x|          # closest approach to the gap
+threaded   = crossed and qy_at_gap <= w + 0.15
+speed      = max |velocity components| over the last 20 samples
+violation  = minh < -1e-9
+deadlock   = (not threaded) and (minh >= -1e-9) and (speed < 0.3)
+moving     = (not threaded) and (not deadlock) and (not violation)
+```
+
+**Why threading requires passing through the gap.** Reaching `q_x > 0.5` is not enough. The
+obstacles are finite, so a detour *around* them also reaches the goal, and counting those as
+successes inverts the trend the experiment is measuring: box runs at ρ = 0.5 "succeeded" with
+`|q_y| = 2.85` at the crossing, against an obstacle extent of 2.05 — they went around a barrier
+that had closed the gap, and low ρ therefore looked *good*. A run counts as threaded only if its
+closest approach to `x = 0` lies inside the gap itself.
+
+**Deadlock is separated from violation** because both fail the task but only one is the effect
+being measured: deadlock is a run that never violates a constraint and comes to rest, which is
+the soft minimum being excluded from a region it should be able to reach. The `1e-9` slack in
+`minh` is the numerical tolerance used throughout, including the nine-constraint and ablation
+experiments.
+
 ## Notes on reconstruction
 
 These are limitations of the experimental setup, stated plainly:
@@ -135,8 +185,14 @@ These are limitations of the experimental setup, stated plainly:
 - The box barrier exponent **p = 8** was selected by agreement with the published trajectory
   cloud, not taken from a published value.
 - The MPPI temperature **λ = 300 was used instead of the published λ = 1**. At λ = 1 the
-  first-update effective sample size is 1.00 of K = 1000, so the weighted update carries no more
-  information than a single sample. The ESS is logged for every run.
+  first-update effective sample size is 1.00 of K = 1000 on the nine-constraint map, so the
+  weighted update carries no more information than a single sample; at λ = 300 it is ≈ 922.
+  The ESS is logged for every nine-constraint run and measured directly by
+  `experiments/closed_form_checks.py`.
+- **The temperature is not the same for every experiment.** The gap sweep uses a per-geometry
+  value, `LAMBDA_BY_GEOM` in the source code: **λ = 30 for the rounded-square (p-norm) gap** and
+  **λ = 300 for the disk gap**. The nine-constraint benchmark and the k_max ablation use
+  **λ = 300** throughout. The configs record this as `lambda_by_geometry`.
 - All guarantees in the paper are **continuous-time**. Rollouts here take one Euler step per
   planner step (T_s = 0.1 s) and execution uses substeps (δt = 2×10⁻³ s), so the reported
   results are properties of the discretised planner.
@@ -148,7 +204,7 @@ Settings → Pages → *Deploy from a branch* → branch `main`, folder `/docs`.
 `docs/` cannot reach files outside itself on Pages, so run:
 
 ```bash
-make site      # copies media/ into docs/assets/media/
+make site      # copies media/ into docs/assets/media/, which is tracked
 ```
 
 The page references `assets/media/...` and falls back to the placeholder card whenever a video

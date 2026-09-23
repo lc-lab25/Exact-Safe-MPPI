@@ -5,33 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Exact-Safe MPPI</title>
 <style>
-  :root { --fg:#1b1b1b; --mut:#5a5a5a; --line:#e2e2e2; --bg:#ffffff; --card:#fafafa; }
+  :root { --fg:#1b1b1b; --mut:#5a5a5a; --line:#e2e2e2; --bg:#fff; --card:#fafafa; }
   @media (prefers-color-scheme: dark) {
     :root { --fg:#e9e9e9; --mut:#a8a8a8; --line:#333; --bg:#151515; --card:#1e1e1e; }
   }
   html { color-scheme: light dark; }
   body { margin:0; background:var(--bg); color:var(--fg);
-         font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; }
-  .wrap { max-width:960px; margin:0 auto; padding:48px 20px 80px; }
-  h1 { font-size:2rem; line-height:1.25; margin:0 0 .4em; }
-  h2 { font-size:1.25rem; margin:2.2em 0 .6em; padding-bottom:.3em;
-        border-bottom:1px solid var(--line); }
-  .authors { font-size:1.05rem; margin:0 0 .2em; }
-  .affil, .venue { color:var(--mut); margin:0 0 .2em; }
-  .links { margin:1.6em 0 0; display:flex; gap:10px; flex-wrap:wrap; }
+         font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; }
+  .wrap { max-width:1000px; margin:0 auto; padding:48px 20px 72px; }
+  h1 { font-size:1.9rem; line-height:1.25; margin:0 0 .35em; }
+  .authors { font-size:1.05rem; margin:0 0 .15em; }
+  .affil { color:var(--mut); margin:0; }
+  .links { margin:1.5em 0 2.2em; }
   .links a { display:inline-block; padding:8px 16px; border:1px solid var(--line);
               border-radius:7px; text-decoration:none; color:var(--fg); background:var(--card); }
   .links a:hover { border-color:var(--mut); }
-  figure { margin:0 0 26px; }
+  .grid { display:grid; gap:26px; grid-template-columns:repeat(auto-fit,minmax(380px,1fr)); }
+  figure { margin:0; }
   video, .fallback { width:100%; aspect-ratio:16/9; background:#000; border-radius:8px;
                       display:block; }
   .fallback { background:none; }
-  figcaption { color:var(--mut); font-size:.92rem; margin-top:8px; }
-  pre { background:var(--card); border:1px solid var(--line); border-radius:8px;
-         padding:14px 16px; overflow-x:auto; font-size:.86rem; }
-  code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
-  footer { color:var(--mut); font-size:.9rem; margin-top:3em;
-            border-top:1px solid var(--line); padding-top:1.2em; }
+  figcaption { color:var(--mut); font-size:.9rem; margin-top:8px; }
 </style>
 </head>
 <body>
@@ -40,21 +34,10 @@
   <h1>Composing Exact Barriers Inside an MPPI Planner</h1>
   <p class="authors">Alex Coker and Leilei Cui</p>
   <p class="affil">Department of Mechanical Engineering, University of New Mexico</p>
-  <p class="venue">Submitted to the American Control Conference (ACC) 2027</p>
 
-  <div class="links">
-    <a href="https://github.com/alexkcoker/exact-safe-mppi">Code</a>
-    <a href="#citation">BibTeX</a>
-  </div>
+  <p class="links"><a href="https://github.com/alexkcoker/exact-safe-mppi">Code on GitHub</a></p>
 
-  <h2>Abstract</h2>
-  <p>Exact-Safe MPPI enforces the exact minimum of multiple (high-order) control barrier
-  functions inside every MPPI rollout using a closed-form linear complementarity (LCP) filter.
-  This avoids the certified-set shrinkage of the soft-minimum composition used by GS-MPPI,
-  which can close feasible gaps and cause deadlock below the threshold
-  &kappa;<sub>crit</sub> = ln&nbsp;k.</p>
-
-  <h2>Videos</h2>
+  <div class="grid">
     <figure>
       <video controls preload="metadata" data-name="teaser" poster="assets/media/placeholders/teaser.svg">
         <source src="assets/media/videos/teaser.mp4" type="video/mp4">
@@ -111,17 +94,8 @@
       <img class="fallback" data-for="kmax1_ablation_chattering" src="assets/media/placeholders/kmax1_ablation_chattering.svg" alt="Single most-active constraint (k_max=1): chattering" hidden>
       <figcaption>Single most-active constraint (k_max=1): chattering</figcaption>
     </figure>
+  </div>
 
-  <h2 id="citation">BibTeX</h2>
-<pre><code>@inproceedings{coker2027exactsafe,
-  title     = {Composing Exact Barriers Inside an MPPI Planner},
-  author    = {Coker, Alex and Cui, Leilei},
-  booktitle = {Submitted to the American Control Conference (ACC)},
-  year      = {2027}
-}</code></pre>
-
-  <footer>Alex Coker and Leilei Cui &middot; Department of Mechanical Engineering,
-  University of New Mexico</footer>
 </div>
 
 <script>
@@ -134,7 +108,6 @@ document.querySelectorAll('video[data-name]').forEach(function (v) {
   v.addEventListener('error', fallback, true);
   var s = v.querySelector('source');
   if (s) { s.addEventListener('error', fallback); }
-  // some browsers report neither event for a 404; confirm metadata arrived
   setTimeout(function () { if (!v.videoWidth) { fallback(); } }, 2500);
 });
 </script>

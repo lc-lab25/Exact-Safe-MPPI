@@ -34,9 +34,11 @@ def one(t):
                           seed=t["seed"], T=t["T"])
     hj = np.array(run["hj"])
     minh = float(hj.min())
+    ess = np.asarray(run["ess"], float)
     return dict(controller=t["name"], rho=(t["rho"] if t["rho"] else -1.0), goal=t["goal"],
                 seed=t["seed"], run_index=t["run_index"], min_h=minh,
-                violation=int(minh < -1e-9))
+                violation=int(minh < -1e-9),
+                ess_first=float(ess[0]) if ess.size else float("nan"))
 
 
 def main():
@@ -54,6 +56,10 @@ def main():
         agg[key]["runs"] += 1
         agg[key]["violations"] += r["violation"]
         agg[key]["min_h"] = min(agg[key]["min_h"], r["min_h"])
+        agg[key].setdefault("ess_first", []).append(r["ess_first"])
+    for k in agg:
+        e = [x for x in agg[k].pop("ess_first", []) if x == x]
+        agg[k]["ess_first_mean"] = float(np.mean(e)) if e else float("nan")
     with open(d / "summary.json", "w") as fh:
         json.dump(agg, fh, indent=1)
     print(json.dumps(agg, indent=1))
