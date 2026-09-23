@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720" role="img" aria-label="Disk gap  w=0.12:  exact composition threads the gap - video coming soon">
+  <rect width="1280" height="720" fill="#d8d8d8"/>
+  <rect x="8" y="8" width="1264" height="704" fill="none" stroke="#9a9a9a" stroke-width="3"/>
+  <g fill="#4a4a4a">
+    <circle cx="640" cy="286" r="62" fill="none" stroke="#8a8a8a" stroke-width="7"/>
+    <polygon points="620,254 620,318 672,286" fill="#8a8a8a"/>
+  </g>
+  <text x="640" y="418" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="38" fill="#3a3a3a"><tspan x="640" dy="0">Disk gap w=0.12: exact composition threads</tspan><tspan x="640" dy="46">the gap</tspan></text>
+  <text x="640" y="560" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="34" fill="#6d6d6d">Video coming soon</text>
+</svg>
