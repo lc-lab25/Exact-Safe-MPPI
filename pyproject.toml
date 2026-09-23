@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "exact-safe-mppi"
+version = "0.1.0"
+description = "Exact barrier composition inside an MPPI planner"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+  {name = "Alex Coker"},
+  {name = "Leilei Cui"},
+]
+dependencies = [
+  "numpy==1.26.4",
+  "scipy==1.15.3",
+  "matplotlib==3.10.8",
+  "PyYAML==6.0.3",
+]
+
+[project.optional-dependencies]
+dev = ["pytest==9.1.1"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
