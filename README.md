@@ -8,7 +8,7 @@ Department of Mechanical Engineering, University of New Mexico
 [![CI](https://github.com/alexkcoker/exact-safe-mppi/actions/workflows/ci.yml/badge.svg)](https://github.com/alexkcoker/exact-safe-mppi/actions/workflows/ci.yml)
 [![Python 3.10](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/)
 
-<a href="media/videos/teaser.mp4"><img src="media/covers/teaser.png" width="720" alt="Soft-min vs exact, disk gap"></a>
+<a href="media/videos/teaser.mp4"><img src="media/gifs/teaser.gif" width="720" alt="Soft-min vs exact, disk gap"></a>
 
 ## Abstract
 
@@ -28,46 +28,45 @@ feasible gaps and cause deadlock below the threshold κ_crit = ln k.
 
 ## Videos
 
-All eight videos are committed under `media/videos/`. Each image below is a frame from its
-video; click it to open the mp4. (GitHub does not play relative-path mp4 files inline in a
-README, so a still is used here rather than an embedded player.)
+Each preview below is a looping GIF that plays here in the README, no click and no navigation.
+Click one to open the full-quality mp4 in `media/videos/`. Both are tracked by git.
 
 | Preview | Content |
 |---|---|
-| <a href="media/videos/teaser.mp4"><img src="media/covers/teaser.png" width="360" alt="Soft-min vs exact, disk gap"></a> | Soft-min vs exact, disk gap |
-| <a href="media/videos/disk_gap_softmin_rho1_deadlock.mp4"><img src="media/covers/disk_gap_softmin_rho1_deadlock.png" width="360" alt="Disk gap w=0.12, ρ=1 (κ=0.606 < ln 2): soft min halts"></a> | Disk gap w=0.12, ρ=1 (κ=0.606 < ln 2): soft min halts |
-| <a href="media/videos/disk_gap_exact_threads.mp4"><img src="media/covers/disk_gap_exact_threads.png" width="360" alt="Disk gap w=0.12: exact composition threads the gap"></a> | Disk gap w=0.12: exact composition threads the gap |
-| <a href="media/videos/box_gap_softmin_vs_exact.mp4"><img src="media/covers/box_gap_softmin_vs_exact.png" width="360" alt="Rounded-square gap (p=8): soft min vs exact"></a> | Rounded-square gap (p=8): soft min vs exact |
-| <a href="media/videos/nine_constraint_exact_safe.mp4"><img src="media/covers/nine_constraint_exact_safe.png" width="360" alt="Nine-constraint map: Exact-Safe MPPI"></a> | Nine-constraint map: Exact-Safe MPPI |
-| <a href="media/videos/nine_constraint_softmin_rho200.mp4"><img src="media/covers/nine_constraint_softmin_rho200.png" width="360" alt="Nine-constraint map: soft min, ρ=200"></a> | Nine-constraint map: soft min, ρ=200 |
-| <a href="media/videos/nine_constraint_shield.mp4"><img src="media/covers/nine_constraint_shield.png" width="360" alt="Nine-constraint map: discrete-time repair baseline"></a> | Nine-constraint map: discrete-time repair baseline |
-| <a href="media/videos/kmax1_ablation_chattering.mp4"><img src="media/covers/kmax1_ablation_chattering.png" width="360" alt="Single most-active constraint (k_max=1): chattering"></a> | Single most-active constraint (k_max=1): chattering |
+| <a href="media/videos/teaser.mp4"><img src="media/gifs/teaser.gif" width="380" alt="Soft-min vs exact, disk gap"></a> | Soft-min vs exact, disk gap |
+| <a href="media/videos/disk_gap_softmin_rho1_deadlock.mp4"><img src="media/gifs/disk_gap_softmin_rho1_deadlock.gif" width="380" alt="Disk gap w=0.12, ρ=1 (κ=0.606 < ln 2): soft min halts"></a> | Disk gap w=0.12, ρ=1 (κ=0.606 < ln 2): soft min halts |
+| <a href="media/videos/disk_gap_exact_threads.mp4"><img src="media/gifs/disk_gap_exact_threads.gif" width="380" alt="Disk gap w=0.12: exact composition threads the gap"></a> | Disk gap w=0.12: exact composition threads the gap |
+| <a href="media/videos/box_gap_softmin_vs_exact.mp4"><img src="media/gifs/box_gap_softmin_vs_exact.gif" width="380" alt="Rounded-square gap (p=8): soft min vs exact"></a> | Rounded-square gap (p=8): soft min vs exact |
+| <a href="media/videos/nine_constraint_exact_safe.mp4"><img src="media/gifs/nine_constraint_exact_safe.gif" width="380" alt="Nine-constraint map: Exact-Safe MPPI"></a> | Nine-constraint map: Exact-Safe MPPI |
+| <a href="media/videos/nine_constraint_softmin_rho200.mp4"><img src="media/gifs/nine_constraint_softmin_rho200.gif" width="380" alt="Nine-constraint map: soft min, ρ=200"></a> | Nine-constraint map: soft min, ρ=200 |
+| <a href="media/videos/nine_constraint_shield.mp4"><img src="media/gifs/nine_constraint_shield.gif" width="380" alt="Nine-constraint map: discrete-time repair baseline"></a> | Nine-constraint map: discrete-time repair baseline |
+| <a href="media/videos/kmax1_ablation_chattering.mp4"><img src="media/gifs/kmax1_ablation_chattering.gif" width="380" alt="Single most-active constraint (k_max=1): chattering"></a> | Single most-active constraint (k_max=1): chattering |
+
+The GIFs are built from the mp4s at 12 fps by `scripts/make_gifs.sh` (`make gifs`), which uses a
+per-clip `palettegen`/`paletteuse` pass; they total about 1.4 MB. The mp4s are the reference
+copies — regenerate those with `scripts/render_video.py`, then rebuild the GIFs from them.
 
 ### Adding a video
-
-Videos are tracked by git; nothing in `.gitignore` excludes them.
 
 ```bash
 # 1. put the file in place, using exactly the name from the table above
 #    (or regenerate it: python scripts/render_video.py --name disk_gap_exact_threads)
 cp /path/to/clip.mp4 media/videos/disk_gap_exact_threads.mp4
 
-# 2. refresh the copy the project page serves
-make site
+# 2. rebuild the inline GIF previews
+make gifs
 
 # 3. commit both
-git add media/videos/disk_gap_exact_threads.mp4 docs/assets/media
+git add media/videos/disk_gap_exact_threads.mp4 media/gifs/disk_gap_exact_threads.gif
 git commit -m "Add disk gap exact threading video"
 ```
 
-No other edit is needed: the README already links to `media/videos/<name>.mp4`, and the project
-page swaps its placeholder for the real file automatically.
+No other edit is needed: the README already points at `media/gifs/<name>.gif` and links to
+`media/videos/<name>.mp4` under the same name.
 
-> **One GitHub quirk.** GitHub does not play a relative-path `.mp4` inline in a README, so the
-> table above will keep showing the placeholder card, which links to the file. To get an inline
-> preview, either replace the placeholder `<img>` with a GIF, or drag the mp4 into a GitHub
-> issue comment and use the resulting `user-attachments` URL. The project page under `docs/`
-> plays the mp4 directly and needs neither workaround.
+> **Why GIFs.** GitHub does not play a relative-path `.mp4` inline in a README — it renders a
+> link, not a player. A GIF autoplays and loops, so the previews above are animated without the
+> reader leaving the page. The mp4s remain the higher-quality copies behind each link.
 
 ## Installation
 
@@ -151,8 +150,8 @@ scripts/               reproduce_all.sh, verify_results.py, render_video.py
 tests/                 pytest: Lemma 3, two-barrier slice, Theorem 1(iii), LCP validity,
                        Proposition 1, determinism
 results/expected/      the paper's reported numbers, used by verify_results.py
-media/                 placeholder cards now, videos later
-docs/                  single-file GitHub Pages project page
+media/videos/          one mp4 per simulation clip (reference quality)
+media/gifs/            the looping previews embedded in this README
 ```
 
 ## Outcome definitions
@@ -204,19 +203,6 @@ These are limitations of the experimental setup, stated plainly:
 - All guarantees in the paper are **continuous-time**. Rollouts here take one Euler step per
   planner step (T_s = 0.1 s) and execution uses substeps (δt = 2×10⁻³ s), so the reported
   results are properties of the discretised planner.
-
-## GitHub Pages
-
-Settings → Pages → *Deploy from a branch* → branch `main`, folder `/docs`.
-
-`docs/` cannot reach files outside itself on Pages, so run:
-
-```bash
-make site      # copies media/ into docs/assets/media/, which is tracked
-```
-
-The page references `assets/media/...` and falls back to the placeholder card whenever a video
-file is absent.
 
 ## Citation
 

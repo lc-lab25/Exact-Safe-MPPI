@@ -2,7 +2,7 @@ PY      ?= python
 WORKERS ?= 1
 export PYTHONPATH := src:experiments:$(PYTHONPATH)
 
-.PHONY: install test quick reproduce figures videos site clean
+.PHONY: install test quick reproduce figures videos gifs clean
 
 install:          ## create the environment from pinned requirements
 	$(PY) -m pip install -r requirements.txt
@@ -27,24 +27,11 @@ figures:          ## regenerate figures from the CSVs already in results/; rerun
 	$(PY) experiments/gap_threshold.py    --plot-only
 	$(PY) experiments/fig2_median_runs.py --plot-only
 
-videos: covers    ## render every simulation video into media/videos/, then its cover frame
+videos: gifs      ## render every simulation video, then rebuild the inline GIF previews
 
-covers:           ## extract a still from each video for the README (needs ffmpeg)
+gifs:             ## build media/gifs/*.gif from media/videos/*.mp4 (needs ffmpeg)
 	$(PY) scripts/render_video.py --all
-	@mkdir -p media/covers
-	@for f in media/videos/*.mp4; do \
-	    n=$$(basename $$f .mp4); \
-	    d=$$(ffmpeg -i $$f 2>&1 | grep -oE "Duration: [0-9:.]+" | cut -d" " -f2 \
-	         | awk -F: "{print (\$$1*3600+\$$2*60+\$$3)*0.85}"); \
-	    ffmpeg -loglevel error -ss $$d -i $$f -frames:v 1 -vf scale=640:-1 -y media/covers/$$n.png; \
-	    echo "cover: media/covers/$$n.png"; \
-	done
-
-site:             ## copy media into docs/ so GitHub Pages can reach it
-	mkdir -p docs/assets/media
-	cp -r media/placeholders docs/assets/media/
-	cp -r media/videos       docs/assets/media/
-	@echo "docs/assets/media refreshed"
+	bash scripts/make_gifs.sh
 
 clean:
 	rm -rf results/gap_threshold results/nine_constraint results/kmax_ablation \
