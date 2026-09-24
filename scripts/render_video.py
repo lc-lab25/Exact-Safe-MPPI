@@ -18,6 +18,8 @@ from exact_safe_mppi import environments as E                       # noqa: E402
 from exact_safe_mppi.dynamics import DoubleIntegrator, Unicycle     # noqa: E402
 from exact_safe_mppi.mppi import Cost, make_filter, run_closed_loop  # noqa: E402
 
+GS_MAP = E.nine_constraint
+
 # name -> (environment factory, list of arms to draw, run length)
 SPECS = {
     "teaser":                        ("disk", [("softmin", 1.0), ("exact", None)], 12.0),
@@ -42,7 +44,28 @@ def simulate(kind, arm, rho, T, seed=0, k_max=4):
         delta = 0.0666
     filt = make_filter(arm, env, rho=rho, delta=delta, k_max=k_max)
     run = run_closed_loop(x0, dyn, env, filt, Cost(goal), seed=seed, T=T)
-    return env, np.array(run["x"])[:, :2]
+    return env, np.array(run["x"])[:, :2], np.array(run["u"])
+
+
+def _pnorm_ring(ax, bx, by, axx, ayy, c, p, **kw):
+    """Outline of {|ax(qx-bx)|^p + |ay(qy-by)|^p = c^p}, the p-norm barrier's zero level."""
+    t = np.linspace(0, 2 * np.pi, 400)
+    ct, st = np.cos(t), np.sin(t)
+    x = bx + (c / axx) * np.sign(ct) * np.abs(ct) ** (2.0 / p)
+    y = by + (c / ayy) * np.sign(st) * np.abs(st) ** (2.0 / p)
+    ax.plot(x, y, **kw)
+
+
+def _draw_gs(ax):
+    """The nine-constraint map: six p-norm obstacles and the outer wall."""
+    p = GS_MAP.P_NORM
+    for _, bx, by, axx, ayy, c in GS_MAP.OBSTACLES:
+        _pnorm_ring(ax, bx, by, axx, ayy, c, p, color="k", lw=1.2)
+    _, bx, by, axx, ayy, c = GS_MAP.WALL
+    _pnorm_ring(ax, bx, by, axx, ayy, c, p, color="0.4", lw=1.2)
+    lim = 11.0
+    ax.set_xlim(-lim, lim)
+    ax.set_ylim(-lim, lim)
 
 
 def render(name, fps=30, dpi=140):
@@ -53,32 +76,62 @@ def render(name, fps=30, dpi=140):
     kind, arms, T = SPECS[name]
     k_max = 1 if name.startswith("kmax1") else 4
     panels = [(a, r, *simulate(kind, a, r, T, k_max=k_max)) for a, r in arms]
-    n = len(panels)
+    show_u = name.startswith("kmax1")          # chattering lives in u, not in the path
+    n = len(panels) + (1 if show_u else 0)
     fig, axes = plt.subplots(1, n, figsize=(5.4 * n, 5.0), squeeze=False)
     lines, dots = [], []
-    for ax, (arm, rho, env, q) in zip(axes[0], panels):
+    for ax, (arm, rho, env, q, u) in zip(axes[0], panels):
         if kind in ("disk", "box"):
             th = np.linspace(0, 2 * np.pi, 200)
-            for s in (+1, -1):
+            for s_ in (+1, -1):
                 if kind == "disk":
-                    ax.plot(env.r * np.cos(th), s * env.d + env.r * np.sin(th), "k-", lw=1.2)
+                    ax.plot(env.r * np.cos(th), s_ * env.d + env.r * np.sin(th), "k-", lw=1.2)
                 else:
-                    ax.plot(env.c * np.sign(np.cos(th)) * np.abs(np.cos(th)) ** (2 / env.p),
-                            s * env.d + env.c * np.sign(np.sin(th))
-                            * np.abs(np.sin(th)) ** (2 / env.p), "k-", lw=1.2)
+                    _pnorm_ring(ax, 0.0, s_ * env.d, 1.0, 1.0, env.c, env.p, color="k", lw=1.2)
             ax.axvline(0.0, color="g", ls="-.", lw=1)
-            ax.set_xlim(-4, 4); ax.set_ylim(-3, 3)
-        ax.set_aspect("equal"); ax.set_xlabel("$q_x$"); ax.set_ylabel("$q_y$")
-        ax.set_title(f"{arm}" + (f"  $\\rho={rho:g}$" if rho else ""))
+            ax.set_xlim(-4, 4)
+            ax.set_ylim(-3, 3)
+        else:
+            _draw_gs(ax)
+        ax.set_aspect("equal")
+        ax.set_xlabel("$q_x$")
+        ax.set_ylabel("$q_y$")
+        ax.set_title(f"{arm}" + (f"  $\\rho={rho:g}$" if rho else "")
+                     + (f"  $k_{{\\max}}={k_max}$" if show_u else ""))
         (ln,) = ax.plot([], [], lw=1.8)
         (dt,) = ax.plot([], [], "o", ms=6)
-        lines.append(ln); dots.append(dt)
-    nf = min(len(p[3]) for p in panels)
+        lines.append(ln)
+        dots.append(dt)
+    nf = min(len(p_[3]) for p_ in panels)
+
+    uax = None
+    if show_u:
+        uax = axes[0][-1]
+        u = panels[0][4]
+        tv = float(np.abs(np.diff(u, axis=0)).sum())
+        tt = np.arange(len(u)) * (T / max(1, len(u) - 1))
+        uax.plot(tt, u[:, 0], lw=0.8, color="0.7")
+        uax.plot(tt, u[:, 1], lw=0.8, color="0.85")
+        (ul0,) = uax.plot([], [], lw=1.2)
+        (ul1,) = uax.plot([], [], lw=1.2)
+        uax.set_xlim(0, T)
+        m = float(np.abs(u).max()) * 1.1 + 1e-9
+        uax.set_ylim(-m, m)
+        uax.set_xlabel("$t$ [s]")
+        uax.set_ylabel("$u^*$")
+        uax.set_title(f"filtered control,  TV$(u^*)={tv:.0f}$")
+        lines += [ul0, ul1]
 
     def upd(i):
-        for ln, dt, (_, _, _, q) in zip(lines, dots, panels):
+        for ln, dt, (_a, _r, _e, q, _u) in zip(lines, dots, panels):
             ln.set_data(q[:i + 1, 0], q[:i + 1, 1])
             dt.set_data([q[i, 0]], [q[i, 1]])
+        if uax is not None:
+            uu = panels[0][4]
+            j = min(i, len(uu) - 1)
+            tt2 = np.arange(j + 1) * (T / max(1, len(uu) - 1))
+            lines[-2].set_data(tt2, uu[:j + 1, 0])
+            lines[-1].set_data(tt2, uu[:j + 1, 1])
         return lines + dots
 
     ani = animation.FuncAnimation(fig, upd, frames=range(0, nf, max(1, nf // (fps * 10))),

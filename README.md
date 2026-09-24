@@ -28,8 +28,9 @@ feasible gaps and cause deadlock below the threshold κ_crit = ln k.
 
 ## Videos
 
-Videos are not committed yet; each row shows a placeholder card that links to the file path it
-will occupy.
+All eight videos are committed under `media/videos/` and play on the project page. GitHub does
+not play relative-path mp4 files inline in a README, so the table below shows placeholder cards
+that link to each file.
 
 | Preview | Content |
 |---|---|
@@ -82,6 +83,13 @@ python -m pip install -e .
 ```
 
 `make videos` additionally needs `ffmpeg` on `PATH` (it is in `environment.yml`).
+
+On UNM CARC Easley the `ffmpeg/7.1` modulefile loads but does not set `PATH`; use the binary
+directly:
+
+```bash
+export PATH=/opt/spack/opt/spack/linux-sapphirerapids/ffmpeg-7.1-pod7gebu4qodjdoap3rznh4bk5ihhlm3/bin:$PATH
+```
 
 ## Quick start
 
