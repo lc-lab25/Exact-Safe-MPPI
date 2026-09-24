@@ -27,8 +27,18 @@ figures:          ## regenerate figures from the CSVs already in results/; rerun
 	$(PY) experiments/gap_threshold.py    --plot-only
 	$(PY) experiments/fig2_median_runs.py --plot-only
 
-videos:           ## render every simulation video into media/videos/
+videos: covers    ## render every simulation video into media/videos/, then its cover frame
+
+covers:           ## extract a still from each video for the README (needs ffmpeg)
 	$(PY) scripts/render_video.py --all
+	@mkdir -p media/covers
+	@for f in media/videos/*.mp4; do \
+	    n=$$(basename $$f .mp4); \
+	    d=$$(ffmpeg -i $$f 2>&1 | grep -oE "Duration: [0-9:.]+" | cut -d" " -f2 \
+	         | awk -F: "{print (\$$1*3600+\$$2*60+\$$3)*0.85}"); \
+	    ffmpeg -loglevel error -ss $$d -i $$f -frames:v 1 -vf scale=640:-1 -y media/covers/$$n.png; \
+	    echo "cover: media/covers/$$n.png"; \
+	done
 
 site:             ## copy media into docs/ so GitHub Pages can reach it
 	mkdir -p docs/assets/media

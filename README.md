@@ -8,7 +8,7 @@ Department of Mechanical Engineering, University of New Mexico
 [![CI](https://github.com/alexkcoker/exact-safe-mppi/actions/workflows/ci.yml/badge.svg)](https://github.com/alexkcoker/exact-safe-mppi/actions/workflows/ci.yml)
 [![Python 3.10](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/)
 
-<a href="media/videos/teaser.mp4"><img src="media/placeholders/teaser.svg" width="640" alt="Soft-min vs exact, disk gap"></a>
+<a href="media/videos/teaser.mp4"><img src="media/covers/teaser.png" width="720" alt="Soft-min vs exact, disk gap"></a>
 
 ## Abstract
 
@@ -28,20 +28,20 @@ feasible gaps and cause deadlock below the threshold κ_crit = ln k.
 
 ## Videos
 
-All eight videos are committed under `media/videos/` and play on the project page. GitHub does
-not play relative-path mp4 files inline in a README, so the table below shows placeholder cards
-that link to each file.
+All eight videos are committed under `media/videos/`. Each image below is a frame from its
+video; click it to open the mp4. (GitHub does not play relative-path mp4 files inline in a
+README, so a still is used here rather than an embedded player.)
 
 | Preview | Content |
 |---|---|
-| <a href="media/videos/teaser.mp4"><img src="media/placeholders/teaser.svg" width="320" alt="Soft-min vs exact, disk gap"></a> | Soft-min vs exact, disk gap |
-| <a href="media/videos/disk_gap_softmin_rho1_deadlock.mp4"><img src="media/placeholders/disk_gap_softmin_rho1_deadlock.svg" width="320" alt="Disk gap w=0.12, ρ=1 (κ=0.606 < ln 2): soft min halts"></a> | Disk gap w=0.12, ρ=1 (κ=0.606 < ln 2): soft min halts |
-| <a href="media/videos/disk_gap_exact_threads.mp4"><img src="media/placeholders/disk_gap_exact_threads.svg" width="320" alt="Disk gap w=0.12: exact composition threads the gap"></a> | Disk gap w=0.12: exact composition threads the gap |
-| <a href="media/videos/box_gap_softmin_vs_exact.mp4"><img src="media/placeholders/box_gap_softmin_vs_exact.svg" width="320" alt="Rounded-square gap (p=8): soft min vs exact"></a> | Rounded-square gap (p=8): soft min vs exact |
-| <a href="media/videos/nine_constraint_exact_safe.mp4"><img src="media/placeholders/nine_constraint_exact_safe.svg" width="320" alt="Nine-constraint map: Exact-Safe MPPI"></a> | Nine-constraint map: Exact-Safe MPPI |
-| <a href="media/videos/nine_constraint_softmin_rho200.mp4"><img src="media/placeholders/nine_constraint_softmin_rho200.svg" width="320" alt="Nine-constraint map: soft min, ρ=200"></a> | Nine-constraint map: soft min, ρ=200 |
-| <a href="media/videos/nine_constraint_shield.mp4"><img src="media/placeholders/nine_constraint_shield.svg" width="320" alt="Nine-constraint map: discrete-time repair baseline"></a> | Nine-constraint map: discrete-time repair baseline |
-| <a href="media/videos/kmax1_ablation_chattering.mp4"><img src="media/placeholders/kmax1_ablation_chattering.svg" width="320" alt="Single most-active constraint (k_max=1): chattering"></a> | Single most-active constraint (k_max=1): chattering |
+| <a href="media/videos/teaser.mp4"><img src="media/covers/teaser.png" width="360" alt="Soft-min vs exact, disk gap"></a> | Soft-min vs exact, disk gap |
+| <a href="media/videos/disk_gap_softmin_rho1_deadlock.mp4"><img src="media/covers/disk_gap_softmin_rho1_deadlock.png" width="360" alt="Disk gap w=0.12, ρ=1 (κ=0.606 < ln 2): soft min halts"></a> | Disk gap w=0.12, ρ=1 (κ=0.606 < ln 2): soft min halts |
+| <a href="media/videos/disk_gap_exact_threads.mp4"><img src="media/covers/disk_gap_exact_threads.png" width="360" alt="Disk gap w=0.12: exact composition threads the gap"></a> | Disk gap w=0.12: exact composition threads the gap |
+| <a href="media/videos/box_gap_softmin_vs_exact.mp4"><img src="media/covers/box_gap_softmin_vs_exact.png" width="360" alt="Rounded-square gap (p=8): soft min vs exact"></a> | Rounded-square gap (p=8): soft min vs exact |
+| <a href="media/videos/nine_constraint_exact_safe.mp4"><img src="media/covers/nine_constraint_exact_safe.png" width="360" alt="Nine-constraint map: Exact-Safe MPPI"></a> | Nine-constraint map: Exact-Safe MPPI |
+| <a href="media/videos/nine_constraint_softmin_rho200.mp4"><img src="media/covers/nine_constraint_softmin_rho200.png" width="360" alt="Nine-constraint map: soft min, ρ=200"></a> | Nine-constraint map: soft min, ρ=200 |
+| <a href="media/videos/nine_constraint_shield.mp4"><img src="media/covers/nine_constraint_shield.png" width="360" alt="Nine-constraint map: discrete-time repair baseline"></a> | Nine-constraint map: discrete-time repair baseline |
+| <a href="media/videos/kmax1_ablation_chattering.mp4"><img src="media/covers/kmax1_ablation_chattering.png" width="360" alt="Single most-active constraint (k_max=1): chattering"></a> | Single most-active constraint (k_max=1): chattering |
 
 ### Adding a video
 
