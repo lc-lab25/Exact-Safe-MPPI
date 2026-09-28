@@ -8,7 +8,9 @@ Department of Mechanical Engineering, University of New Mexico
 [![CI](https://github.com/alexkcoker/exact-safe-mppi/actions/workflows/ci.yml/badge.svg)](https://github.com/alexkcoker/exact-safe-mppi/actions/workflows/ci.yml)
 [![Python 3.10](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/)
 
-<a href="media/videos/teaser.mp4"><img src="media/gifs/teaser.gif" width="720" alt="Soft-min vs exact, disk gap"></a>
+<a href="media/videos/hardware_exact_vs_softmin.mp4"><img src="media/gifs/hardware_exact_vs_softmin.gif" width="900" alt="Exact min (left) vs soft-min (right): hardware on top, planner view below"></a>
+
+*Left: exact min (Exact-Safe MPPI) threads the gap. Right: soft-min (GS-MPPI, κ = 0.5 < ln 2) deadlocks. Top: real robot. Bottom: the planner's live view (robot's own estimate). Click for the full-quality mp4.*
 
 ## Abstract
 
