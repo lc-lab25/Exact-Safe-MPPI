@@ -1,4 +1,4 @@
-# Composing Exact Barriers Inside an MPPI Planner
+# Exact-Safe MPPI: Safety-Aware Sampling with Nonsmooth Control Barrier Functions
 
 **Alex Coker and Leilei Cui**
 Department of Mechanical Engineering, University of New Mexico
