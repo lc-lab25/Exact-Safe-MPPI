@@ -44,32 +44,6 @@ Click one to open the full-quality mp4 in `media/videos/`. Both are tracked by g
 | <a href="media/videos/nine_constraint_shield.mp4"><img src="media/gifs/nine_constraint_shield.gif" width="380" alt="Nine-constraint map: discrete-time repair baseline"></a> | Nine-constraint map: discrete-time repair baseline |
 | <a href="media/videos/kmax1_ablation_chattering.mp4"><img src="media/gifs/kmax1_ablation_chattering.gif" width="380" alt="Single most-active constraint (k_max=1): chattering"></a> | Single most-active constraint (k_max=1): chattering |
 
-The GIFs are built from the mp4s at 12 fps by `scripts/make_gifs.sh` (`make gifs`), which uses a
-per-clip `palettegen`/`paletteuse` pass; they total about 1.4 MB. The mp4s are the reference
-copies — regenerate those with `scripts/render_video.py`, then rebuild the GIFs from them.
-
-### Adding a video
-
-```bash
-# 1. put the file in place, using exactly the name from the table above
-#    (or regenerate it: python scripts/render_video.py --name disk_gap_exact_threads)
-cp /path/to/clip.mp4 media/videos/disk_gap_exact_threads.mp4
-
-# 2. rebuild the inline GIF previews
-make gifs
-
-# 3. commit both
-git add media/videos/disk_gap_exact_threads.mp4 media/gifs/disk_gap_exact_threads.gif
-git commit -m "Add disk gap exact threading video"
-```
-
-No other edit is needed: the README already points at `media/gifs/<name>.gif` and links to
-`media/videos/<name>.mp4` under the same name.
-
-> **Why GIFs.** GitHub does not play a relative-path `.mp4` inline in a README — it renders a
-> link, not a player. A GIF autoplays and loops, so the previews above are animated without the
-> reader leaving the page. The mp4s remain the higher-quality copies behind each link.
-
 ## Installation
 
 ```bash
@@ -81,15 +55,6 @@ python -m pip install -e .
 conda env create -f environment.yml
 conda activate exact-safe-mppi
 python -m pip install -e .
-```
-
-`make videos` additionally needs `ffmpeg` on `PATH` (it is in `environment.yml`).
-
-On UNM CARC Easley the `ffmpeg/7.1` modulefile loads but does not set `PATH`; use the binary
-directly:
-
-```bash
-export PATH=/opt/spack/opt/spack/linux-sapphirerapids/ffmpeg-7.1-pod7gebu4qodjdoap3rznh4bk5ihhlm3/bin:$PATH
 ```
 
 ## Quick start
@@ -184,27 +149,6 @@ being measured: deadlock is a run that never violates a constraint and comes to 
 the soft minimum being excluded from a region it should be able to reach. The `1e-9` slack in
 `minh` is the numerical tolerance used throughout, including the nine-constraint and ablation
 experiments.
-
-## Notes on reconstruction
-
-These are limitations of the experimental setup, stated plainly:
-
-- The nine-constraint benchmark geometry was **reconstructed from figure ticks** in the source
-  publication, not obtained from the authors.
-- The box barrier exponent **p = 8** was selected by agreement with the published trajectory
-  cloud, not taken from a published value.
-- The MPPI temperature **λ = 300 was used instead of the published λ = 1**. At λ = 1 the
-  first-update effective sample size is 1.00 of K = 1000 on the nine-constraint map, so the
-  weighted update carries no more information than a single sample; at λ = 300 it is ≈ 922.
-  The ESS is logged for every nine-constraint run and measured directly by
-  `experiments/closed_form_checks.py`.
-- **The temperature is not the same for every experiment.** The gap sweep uses a per-geometry
-  value, `LAMBDA_BY_GEOM` in the source code: **λ = 30 for the rounded-square (p-norm) gap** and
-  **λ = 300 for the disk gap**. The nine-constraint benchmark and the k_max ablation use
-  **λ = 300** throughout. The configs record this as `lambda_by_geometry`.
-- All guarantees in the paper are **continuous-time**. Rollouts here take one Euler step per
-  planner step (T_s = 0.1 s) and execution uses substeps (δt = 2×10⁻³ s), so the reported
-  results are properties of the discretised planner.
 
 ## Citation
 
